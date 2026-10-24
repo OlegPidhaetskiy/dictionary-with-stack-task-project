@@ -7,7 +7,7 @@ import {
   Image,
   Pressable,
 } from "react-native";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getWordInfo } from "../services/wordsHandler";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { playSound } from "../services/soundHandler";
@@ -15,54 +15,43 @@ import { COLORS } from "../constants";
 
 function AddWord({ navigation }) {
   const [text, setText] = useState("");
-  const [wordData, setWordData] = useState();
+  const [wordData, setWordData] = useState(undefined);
+  const previousTitle = useRef(undefined);
+
+  useEffect(() => {
+    const title = wordData?.word
+      ? `Adding word "${wordData.word}"`
+      : "Adding word";
+
+    if (previousTitle.current !== title) {
+      navigation.setOptions({ title });
+      previousTitle.current = title;
+    }
+  }, [navigation, wordData]);
 
   function onChangeText(value) {
     setText(value);
-    setWordData(undefined);
   }
 
-  // Update the screen title when the word is found.
-  useEffect(() => {
-    navigation.setOptions({
-      title: wordData?.word
-        ? `Adding word "${wordData.word}"`
-        : "Adding word",
-    });
-  }, [navigation, wordData]);
-
-  // Search for the word when the input changes.
   useEffect(() => {
     const word = text.trim();
 
-    if (!word) {
-      setWordData(undefined);
-      return;
-    }
+    const timeout = setTimeout(async () => {
+      if (!word) {
+        setWordData(undefined);
+        return;
+      }
 
-    let isActive = true;
-
-    async function fetchWordInfo() {
       try {
         const result = await getWordInfo(word);
-
-        if (isActive) {
-          setWordData(result);
-        }
+        setWordData(result);
       } catch (error) {
         console.error("Error fetching word info:", error);
-
-        if (isActive) {
-          setWordData(undefined);
-        }
+        setWordData(undefined);
       }
-    }
+    }, 1000);
 
-    fetchWordInfo();
-
-    return () => {
-      isActive = false;
-    };
+    return () => clearTimeout(timeout);
   }, [text]);
 
   function onAdd() {
@@ -90,7 +79,6 @@ function AddWord({ navigation }) {
 
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Your word to search:</Text>
-
         <TextInput
           style={styles.input}
           onChangeText={onChangeText}
@@ -105,7 +93,7 @@ function AddWord({ navigation }) {
           <View style={{ flexDirection: "row", alignItems: "baseline" }}>
             <Text style={styles.word}>{wordData.word}</Text>
 
-            {wordData.audio ? (
+            {wordData.audio && (
               <Pressable
                 style={styles.playPressable}
                 onPress={() => playSound(wordData.audio)}
@@ -116,10 +104,10 @@ function AddWord({ navigation }) {
                   color={COLORS.primary900}
                 />
               </Pressable>
-            ) : null}
+            )}
 
             <Text style={styles.phonetics}>
-              {wordData.phonetics}
+              {wordData.phonetics ?? wordData.phonetic}
             </Text>
           </View>
 
@@ -127,11 +115,9 @@ function AddWord({ navigation }) {
             {wordData.partOfSpeech}
           </Text>
 
-          <Text style={styles.meaning}>
-            {wordData.meaning}
-          </Text>
+          <Text style={styles.meaning}>{wordData.meaning}</Text>
 
-          {wordData.word ? (
+          {wordData.word && (
             <Pressable
               style={styles.buttonContainer}
               onPress={onAdd}
@@ -140,7 +126,7 @@ function AddWord({ navigation }) {
                 Add
               </Text>
             </Pressable>
-          ) : null}
+          )}
         </View>
       )}
     </>
