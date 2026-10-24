@@ -10,8 +10,16 @@
     "test": "jest"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
+=======
+<<<<<<< HEAD
+    "@react-navigation/native": "^6.1.9",
+    "@react-navigation/native-stack": "^6.9.17",
+=======
+>>>>>>> 158182f2981c4cb72c5db32ba0579b50fde70d39
+>>>>>>> dbd62063019ae9dac896a1101888c9db3f2a1752
     "axios": "^1.6.2",
     "expo": "~49.0.15",
     "expo-av": "~13.4.1",
