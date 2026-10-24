@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { View, StyleSheet, TextInput, Text, Image, Pressable } from "react-native";
 import { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -130,3 +131,12 @@ const styles = StyleSheet.create({
 });
 
 export default EditWord;
+=======
+function EditWord() {
+
+  return (
+    <> 
+    </>
+  );
+}
+>>>>>>> 158182f2981c4cb72c5db32ba0579b50fde70d39

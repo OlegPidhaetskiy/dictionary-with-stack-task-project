@@ -12,7 +12,11 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { playSound } from "../services/soundHandler";
 import { COLORS } from "../constants";
 
+<<<<<<< HEAD
 function AddWord({ route, navigation }) {
+=======
+function AddWord() {
+>>>>>>> 158182f2981c4cb72c5db32ba0579b50fde70d39
   const [text, setText] = useState();
   const [wordData, setWordData] = useState();
 
@@ -22,6 +26,7 @@ function AddWord({ route, navigation }) {
   }
 
   useEffect(() => {
+<<<<<<< HEAD
     navigation.setOptions({
       title: wordData?.word ? `Adding word "${wordData.word}"` : "Adding word",
     });
@@ -32,6 +37,8 @@ function AddWord({ route, navigation }) {
   }
 
   useEffect(() => {
+=======
+>>>>>>> 158182f2981c4cb72c5db32ba0579b50fde70d39
     const delayDebounceFn = setTimeout(async () => {
       if (text) {
         const wordDataReceived = await getWordInfo(text);
