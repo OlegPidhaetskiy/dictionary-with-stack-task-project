@@ -1,13 +1,9 @@
-<<<<<<< HEAD
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-=======
->>>>>>> 158182f2981c4cb72c5db32ba0579b50fde70d39
 import AllWords from "./screens/AllWords";
 import AddWord from "./screens/AddWord";
 import EditWord from "./screens/EditWord";
 import { COLORS } from "./constants";
-<<<<<<< HEAD
 
 const Stack = createNativeStackNavigator();
 
@@ -43,7 +39,6 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
-=======
 import { StatusBar } from "react-native";
 
 export default function App() {
@@ -52,6 +47,5 @@ export default function App() {
       // <AddWord />
       // <EditWord />
       
->>>>>>> 158182f2981c4cb72c5db32ba0579b50fde70d39
   );
 }
