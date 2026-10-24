@@ -1,3 +1,4 @@
+
 import {
   View,
   StyleSheet,
@@ -12,16 +13,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { playSound } from "../services/soundHandler";
 import { COLORS } from "../constants";
 
-<<<<<<< HEAD
-function AddWord({ route, navigation }) {
-=======
-<<<<<<< HEAD
-function AddWord({ route, navigation }) {
-=======
-function AddWord() {
->>>>>>> 158182f2981c4cb72c5db32ba0579b50fde70d39
->>>>>>> dbd62063019ae9dac896a1101888c9db3f2a1752
-  const [text, setText] = useState();
+function AddWord({ navigation }) {
+  const [text, setText] = useState("");
   const [wordData, setWordData] = useState();
 
   function onChangeText(text) {
@@ -29,35 +22,39 @@ function AddWord() {
     setText(text);
   }
 
+  // Update the screen title when the word is found
   useEffect(() => {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> dbd62063019ae9dac896a1101888c9db3f2a1752
     navigation.setOptions({
-      title: wordData?.word ? `Adding word "${wordData.word}"` : "Adding word",
+      title: wordData?.word
+        ? `Adding word "${wordData.word}"`
+        : "Adding word",
     });
   }, [navigation, wordData]);
 
-  function onAdd() {
-    navigation.navigate("AllWords", { newWord: wordData });
-  }
-
+  // Search for the word after the user stops typing
   useEffect(() => {
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 158182f2981c4cb72c5db32ba0579b50fde70d39
->>>>>>> dbd62063019ae9dac896a1101888c9db3f2a1752
     const delayDebounceFn = setTimeout(async () => {
-      if (text) {
-        const wordDataReceived = await getWordInfo(text);
-        setWordData(wordDataReceived);
+      if (text.trim()) {
+        try {
+          const wordDataReceived = await getWordInfo(text.trim());
+          setWordData(wordDataReceived);
+        } catch (error) {
+          console.error("Error fetching word info:", error);
+          setWordData(undefined);
+        }
       }
     }, 1000);
 
     return () => clearTimeout(delayDebounceFn);
   }, [text]);
+
+  function onAdd() {
+    if (wordData?.word) {
+      navigation.navigate("AllWords", {
+        newWord: wordData,
+      });
+    }
+  }
 
   return (
     <>
@@ -73,6 +70,7 @@ function AddWord() {
         }}
         source={require("../assets/add.png")}
       />
+
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Your word to search:</Text>
         <TextInput
@@ -83,10 +81,12 @@ function AddWord() {
           placeholderTextColor={COLORS.grey600}
         />
       </View>
+
       {wordData && (
         <View style={styles.receivedInfoContainer}>
           <View style={{ flexDirection: "row", alignItems: "baseline" }}>
             <Text style={styles.word}>{wordData.word}</Text>
+
             {wordData.audio && (
               <Pressable
                 style={styles.playPressable}
@@ -99,13 +99,26 @@ function AddWord() {
                 />
               </Pressable>
             )}
-            <Text style={styles.phonetics}>{wordData.phonetics}</Text>
+
+            <Text style={styles.phonetics}>
+              {wordData.phonetics}
+            </Text>
           </View>
-          <Text style={styles.partOfSpeech}>{wordData.partOfSpeech}</Text>
+
+          <Text style={styles.partOfSpeech}>
+            {wordData.partOfSpeech}
+          </Text>
+
           <Text style={styles.meaning}>{wordData.meaning}</Text>
+
           {wordData.word && (
-            <Pressable style={styles.buttonContainer} onPress={onAdd}>
-              <Text style={{ fontSize: 24, color: COLORS.white }}>Add</Text>
+            <Pressable
+              style={styles.buttonContainer}
+              onPress={onAdd}
+            >
+              <Text style={{ fontSize: 24, color: COLORS.white }}>
+                Add
+              </Text>
             </Pressable>
           )}
         </View>

@@ -1,3 +1,4 @@
+
 import {
   View,
   FlatList,
@@ -9,10 +10,8 @@ import {
 import { useState, useEffect } from "react";
 import Item from "../components/ListItem";
 import Ionicons from "@expo/vector-icons/Ionicons";
-
 import { COLORS } from "../constants";
 
-<<<<<<< HEAD
 function AllWords({ route, navigation }) {
   const [myWords, setMyWords] = useState([]);
 
@@ -21,63 +20,53 @@ function AllWords({ route, navigation }) {
 
   useEffect(() => {
     const incoming = newWord ?? editedWord;
+
     if (!incoming?.word) return;
+
     setMyWords((prev) => {
-      const exists = prev.some((item) => item.word === incoming.word);
+      const exists = prev.some(
+        (item) => item.word === incoming.word
+      );
+
       return exists
-        ? prev.map((item) => (item.word === incoming.word ? incoming : item))
+        ? prev.map((item) =>
+            item.word === incoming.word ? incoming : item
+          )
         : [...prev, incoming];
     });
-  }, [newWord, editedWord]);
 
-=======
-<<<<<<< HEAD
-function AllWords({ route, navigation }) {
-  const [myWords, setMyWords] = useState([]);
-
-  const newWord = route?.params?.newWord;
-  const editedWord = route?.params?.editedWord;
-
-  useEffect(() => {
-    const incoming = newWord ?? editedWord;
-    if (!incoming?.word) return;
-    setMyWords((prev) => {
-      const exists = prev.some((item) => item.word === incoming.word);
-      return exists
-        ? prev.map((item) => (item.word === incoming.word ? incoming : item))
-        : [...prev, incoming];
+    // Clear navigation params after processing the word
+    navigation.setParams({
+      newWord: undefined,
+      editedWord: undefined,
     });
-  }, [newWord, editedWord]);
+  }, [newWord, editedWord, navigation]);
 
-=======
-function AllWords() {
-  const [myWords, setMyWords] = useState([]);
-
->>>>>>> 158182f2981c4cb72c5db32ba0579b50fde70d39
->>>>>>> dbd62063019ae9dac896a1101888c9db3f2a1752
   function deleteWord(wordToDelete) {
-    setMyWords((prev) => prev.filter((item) => item.word != wordToDelete));
+    setMyWords((prev) =>
+      prev.filter((item) => item.word !== wordToDelete)
+    );
   }
 
   return (
     <>
       <Pressable
         style={styles.addPressable}
-<<<<<<< HEAD
         onPress={() => navigation.navigate("AddWord")}
-=======
-<<<<<<< HEAD
-        onPress={() => navigation.navigate("AddWord")}
-=======
->>>>>>> 158182f2981c4cb72c5db32ba0579b50fde70d39
->>>>>>> dbd62063019ae9dac896a1101888c9db3f2a1752
       >
-        <Ionicons name="add-outline" size={46} color={COLORS.white} />
+        <Ionicons
+          name="add-outline"
+          size={46}
+          color={COLORS.white}
+        />
       </Pressable>
+
       <View style={{ flex: 2 }}>
         <FlatList
           data={myWords}
-          renderItem={({ item }) => <Item item={item} onDelete={deleteWord} />}
+          renderItem={({ item }) => (
+            <Item item={item} onDelete={deleteWord} />
+          )}
           keyExtractor={(item) => item.word}
           ListEmptyComponent={
             <View style={styles.empty}>
